@@ -1,6 +1,11 @@
 # Windows image file caches
 Thumbs.db
 ehthumbs.db
+.idea
+.sbtserver
+project/project
+project/target
+target
 
 # Folder config file
 Desktop.ini
