@@ -6,6 +6,6 @@ import akka.util.Timeout
 /**
  *
  */
-trait aDefaultTimeout {
+trait DefaultTimeout {
   implicit val timeout = new Timeout(2, TimeUnit.SECONDS)
 }

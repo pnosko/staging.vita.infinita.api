@@ -16,10 +16,10 @@ trait BootService {
 }
 
 trait DefaultBootService extends BootService {
-  override implicit val system = ActorSystem()
-  override implicit val executor = system.dispatcher
-  override implicit val materializer = ActorFlowMaterializer()
+  override implicit val system: ActorSystem = ActorSystem()
+  override implicit val executor: ExecutionContextExecutor = system.dispatcher
+  override implicit val materializer: FlowMaterializer = ActorFlowMaterializer()
 
-  override val config = ConfigFactory.load()
-  override val logger = Logging(system, getClass)
+  override val config: Config = ConfigFactory.load()
+  override val logger: LoggingAdapter = Logging(system, getClass)
 }

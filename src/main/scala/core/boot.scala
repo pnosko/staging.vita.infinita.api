@@ -1,6 +1,9 @@
 package core
 
 import akka.http.Http
+import akka.http.model.japi.IncomingConnection
+import akka.stream.ActorFlowMaterializer
+import akka.actor.ActorSystem
 import akka.stream.scaladsl._
 import api.UserApi
 
