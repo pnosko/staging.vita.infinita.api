@@ -18,7 +18,9 @@ object Boot extends DefaultBootService {
   def routes = new UserApi().routes
 
   def main(args: Array[String]): Unit = {
-    Http().bind(interface = config.getString("application.server.host"), port = config.getInt("application.server.port"))
+    val host: String = config.getString("application.server.host")
+    val port: Int = config.getInt("application.server.port")
+    Http().bind(interface = host, port = port)
       .toMat(Sink.foreach(_.flow.join(routes).run()))(Keep.left)
       .run()
   }
