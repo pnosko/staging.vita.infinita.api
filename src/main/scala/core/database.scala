@@ -48,7 +48,7 @@ class DbInitializer extends DbService {
   def seed(implicit session:Session): Unit = {
     treesTable ++= Seq(FamilyTree(1.some, "1111"), FamilyTree(2.some, "2222"), FamilyTree(3.some, "3333"))
     personsTable ++= Seq(
-      Person(1.some, 1, "User".some, "Userowski".some,  "user@userpwnage.com", Gender.Male.some)
+      Person(1.some, 1, "User".some, "Userowski".some,  "user@userpwnage.com", "M".some)
     )
     usersTable ++= Seq(User(1.some, 1, "User Userowski"), User(2.some, 2, "Testo Testowski"), User(3.some, 3, "Marian Balko"))
   }
