@@ -1,16 +1,14 @@
 package service
 
-import core.DbService
+import core._
 import domain._
-import core.DatabaseExt._
 import scala.slick.driver.H2Driver.simple._
+import DatabaseExt._
 
 /**
  *
  */
-trait UserService extends DbService {
-  def getUsers: List[User] = db.withSession(implicit session => usersTable.list)
-  def createUser(user: User): Option[User] = db.withSession(implicit session => usersTable.insertAndReturn(user))
+trait PersonService extends DbService {
   def getPersons(treeLabel: String): List[Person] = db.withSession { implicit session =>
     (for {
       p <- personsTable
@@ -20,7 +18,6 @@ trait UserService extends DbService {
   def createPerson(person: Person): Option[Person] = db.withSession(implicit session => personsTable.insertAndReturn(person))
 }
 
-object UserService extends UserService {
+object PersonService extends PersonService {
 
 }
-
