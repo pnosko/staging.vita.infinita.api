@@ -1,11 +1,8 @@
 package core
 
 import akka.http.Http
-import akka.http.model.japi.IncomingConnection
-import akka.stream.ActorFlowMaterializer
-import akka.actor.ActorSystem
 import akka.stream.scaladsl._
-import api.UserApi
+import api.{ApiAggregate, UserApi}
 
 /**
  * Main application launcher.
@@ -15,9 +12,11 @@ import api.UserApi
  */
 object Boot extends DefaultBootService {
 
-  def routes = new UserApi().routes
+  def routes = new ApiAggregate(this).routes
 
   def main(args: Array[String]): Unit = {
+    DatabaseCfg.init(config)
+
     val host: String = config.getString("application.server.host")
     val port: Int = config.getInt("application.server.port")
     Http().bind(interface = host, port = port)

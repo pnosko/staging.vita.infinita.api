@@ -19,11 +19,11 @@ object Version {
 
 object Library {
   val akkaActor      = "com.typesafe.akka"  %%  "akka-actor"        % Version.akka
-  val akkaStream     = "com.typesafe.akka"  %   "akka-stream-experimental_2.11"      % Version.akkaHttpExp
-  val akkaCore       = "com.typesafe.akka"  %   "akka-http-experimental_2.11"        % Version.akkaHttpExp
-  val akkaHttp       = "com.typesafe.akka"  %   "akka-http-core-experimental_2.11"   % Version.akkaHttpExp
+  val akkaStream     = "com.typesafe.akka"  %   "akka-stream-experimental_2.11"       % Version.akkaHttpExp
+  val akkaCore       = "com.typesafe.akka"  %   "akka-http-experimental_2.11"         % Version.akkaHttpExp
+  val akkaHttp       = "com.typesafe.akka"  %   "akka-http-core-experimental_2.11"    % Version.akkaHttpExp
   val akkaHttpTest   = "com.typesafe.akka"  %   "akka-http-testkit-experimental_2.11" % Version.akkaHttpExp
-  val akkaJson       = "de.heikoseeberger"  %%  "akka-http-json-spray"               % "0.2.0"
+  val akkaJson       = "de.heikoseeberger"  %%  "akka-http-json-spray"                % "0.2.0"
   val scalaz         = "org.scalaz"         %%  "scalaz-core"       % Version.scalaz
   val sprayJson      = "io.spray"           %%  "spray-json"        % "1.3.0"
   val slick          = "com.typesafe.slick" %%  "slick"             % Version.slick
