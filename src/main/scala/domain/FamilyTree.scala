@@ -11,8 +11,7 @@ case class FamilyTree(id: Option[Int], label: String) //TODO: change to uuid
 /**
  * Slick Item table definition
  */
-class FamilyTrees(tag: Tag) extends Table[FamilyTree](tag, "Tree") {
-  def id: Column[Int] = column[Int]("id", O.AutoInc, O.NotNull, O.PrimaryKey)
+class FamilyTrees(tag: Tag) extends Table[FamilyTree](tag, "Tree") with IdentityColumn {
   def label: Column[String] = column[String]("label", O.NotNull)
   def * = (id.?, label) <> (FamilyTree.tupled, FamilyTree.unapply _)
 }
