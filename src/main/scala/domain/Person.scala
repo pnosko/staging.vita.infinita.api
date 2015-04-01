@@ -13,7 +13,7 @@ case class Person(id: Option[Int], treeId: Int, firstName: Option[String], lastN
  * Slick Todo table definition
  */
 class Persons(tag: Tag) extends Table[Person](tag, "Person") with IdentityColumn {
-//  import domain.GenderConvert._
+  //  import domain.GenderConvert._
 
   override def id: Column[Int] = column[Int]("id", O.NotNull, O.AutoInc, O.PrimaryKey)
   def treeId: Column[Int] = column[Int]("treeId", O.NotNull)

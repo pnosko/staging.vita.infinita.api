@@ -1,6 +1,6 @@
 package core
 
-import domain.{Persons, FamilyTrees, Users}
+import domain.{ Persons, FamilyTrees, Users }
 
 import scala.slick.lifted.TableQuery
 

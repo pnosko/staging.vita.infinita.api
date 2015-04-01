@@ -1,23 +1,25 @@
 package api
 
-import akka.http.server.Directives
-import domain.Protocol
+import akka.stream.ActorFlowMaterializer
+import domain._
 import service._
 
 /**
  *
  */
-class PersonApi extends Directives with DefaultTimeout with Protocol {
-
+class PersonApi(implicit val mat: ActorFlowMaterializer) extends ApiService {
   import scala.concurrent.ExecutionContext.Implicits.global
 
   lazy val personService = PersonService
 
   lazy val routes =
-    path("people" / Segment ) {treeLabel =>
-      get {
-        complete { personService.getPersons(treeLabel) }
+    pathPrefix("people") {
+      (post & entity(as[Person])) { person =>
+        complete {
+          personService.createPerson(person)
+        }
+      } ~ (get & path(Segment)) { treeLabel =>
+          complete { personService.getPersons(treeLabel) }
       }
     }
-
 }

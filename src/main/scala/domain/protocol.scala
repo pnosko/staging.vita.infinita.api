@@ -1,7 +1,8 @@
 package domain
 
-import spray.json._
+//import akka.http.marshalling.DefaultJsonProtocol
 import de.heikoseeberger.akkahttpjsonspray.SprayJsonMarshalling
+import spray.json.DefaultJsonProtocol
 
 /**
  *

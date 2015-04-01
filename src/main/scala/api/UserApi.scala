@@ -11,8 +11,7 @@ import Scalaz._
  * API for User
  * Each api path is in separate spray 'path' directive, in my opinion is cleaner that nesting
  */
-class UserApi(implicit val actorSystem: ActorSystem) extends Directives with DefaultTimeout with Protocol {
-
+class UserApi(implicit val actorSystem: ActorSystem) extends ApiService {
   import scala.concurrent.ExecutionContext.Implicits.global
 
   lazy val userService = UserService

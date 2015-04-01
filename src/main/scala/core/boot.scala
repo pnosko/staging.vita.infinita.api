@@ -1,8 +1,9 @@
 package core
 
 import akka.http.Http
+import akka.http.server.Route
 import akka.stream.scaladsl._
-import api.{ApiAggregate, UserApi}
+import api._
 
 /**
  * Main application launcher.
@@ -12,7 +13,7 @@ import api.{ApiAggregate, UserApi}
  */
 object Boot extends DefaultBootService {
 
-  def routes = new ApiAggregate(this).routes
+  def routes: Route = new api.RouteAggregator(this).routes
 
   def main(args: Array[String]): Unit = {
     DatabaseCfg.init(config)

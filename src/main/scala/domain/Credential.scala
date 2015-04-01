@@ -2,7 +2,6 @@ package domain
 
 import scala.slick.driver.H2Driver.simple._
 
-
 /**
  *
  */
