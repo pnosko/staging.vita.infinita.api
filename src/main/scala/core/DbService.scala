@@ -1,6 +1,6 @@
 package core
 
-import domain.{ Persons, FamilyTrees, Users }
+import domain.{Relationships, Persons, FamilyTrees, Users}
 
 import scala.slick.lifted.TableQuery
 
@@ -14,4 +14,8 @@ trait DbService {
   val usersTable: TableQuery[Users] = TableQuery[Users]
   val treesTable: TableQuery[FamilyTrees] = TableQuery[FamilyTrees]
   val personsTable: TableQuery[Persons] = TableQuery[Persons]
+  val relationshipsTable: TableQuery[Relationships] = TableQuery[Relationships]
+
+
+  val tables: List[TableQuery[_]] = List(usersTable, treesTable, personsTable, relationshipsTable)
 }

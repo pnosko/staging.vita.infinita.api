@@ -1,5 +1,7 @@
 package service
 
+import java.util.UUID
+
 import core.DbService
 import domain._
 import core.DatabaseExt._
@@ -9,14 +11,12 @@ import scala.slick.driver.H2Driver.simple._
  *
  */
 trait UserService extends DbService {
+  def createTree: Option[FamilyTree] = db.withSession(implicit session => treesTable.insertAndReturn(FamilyTree(None, UUID.randomUUID().toString)))
   def getUsers: List[User] = db.withSession(implicit session => usersTable.list)
-  def createUser(user: User): Option[User] = db.withSession(implicit session => usersTable.insertAndReturn(user))
-  def getPersons(treeLabel: String): List[Person] = db.withSession { implicit session =>
-    (for {
-      p <- personsTable
-      t <- treesTable.filter(_.label === treeLabel) if p.treeId === t.id
-    } yield p).list
+  def createUser(person: Person): Option[User] = db.withSession { implicit session =>
+    createTree.flatMap(t => usersTable.insertAndReturn(User(None, t.id.get, person.fullName.get, person.id.get)))
   }
+
   def createPerson(person: Person): Option[Person] = db.withSession(implicit session => personsTable.insertAndReturn(person))
 }
 

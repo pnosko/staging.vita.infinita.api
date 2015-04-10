@@ -1,12 +1,11 @@
 package domain
 
 import scala.slick.driver.H2Driver.simple._
-import core.DatabaseCfg._
 
 /**
  * Tree case class, stores information about item
  */
-case class FamilyTree(id: Option[Int], label: String) //TODO: change to uuid
+case class FamilyTree(id: Option[Int], label: String) extends Identifiable//TODO: change to uuid
 
 /**
  * Slick Item table definition

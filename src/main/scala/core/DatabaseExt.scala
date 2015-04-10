@@ -25,14 +25,20 @@ object DatabaseExt {
     }
     implicit val personWithId = new WithId[Person] {
       def withId(person: Person, id: Int): Person = person.copy(id = id.some)
+    } 
+    implicit val treeWithId = new WithId[FamilyTree] {
+      def withId(tree: FamilyTree, id: Int): FamilyTree = tree.copy(id = id.some)
+    }
+    implicit val relWithId = new WithId[Relationship] {
+      def withId(relationship: Relationship, id: Int): Relationship = relationship.copy(id = id.some)
     }
   }
 
   implicit class DatabaseInsertExt[E <: AbstractTable[_] with IdentityColumn](query: H2Driver.simple.TableQuery[E])(implicit session: H2Driver.backend.Session) {
     // TODO: Can throw at the moment! Catch & wrap in validation or disjunction!
-    def insertAndReturn(user: E#TableElementType)(implicit withId: WithId[E#TableElementType]): Option[E#TableElementType] = {
-      val id = (query returning query.map(_.id)) += user
-      withId.withId(user, id).some
+    def insertAndReturn(entity: E#TableElementType)(implicit withId: WithId[E#TableElementType]): Option[E#TableElementType] = {
+      val id = (query returning query.map(_.id)) += entity
+      withId.withId(entity, id).some
     }
 
   }

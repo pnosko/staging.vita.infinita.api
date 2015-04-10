@@ -1,17 +1,15 @@
 package domain
 
-//import domain.Gender.Gender
-
 import scala.slick.driver.H2Driver.simple._
+import scalaz._, Scalaz._
 
 /**
  * Person case class, stores information about people
  */
-case class Person(id: Option[Int], treeId: Int, firstName: Option[String], lastName: Option[String], email: String, gender: Option[String]) extends Identifiable
+case class Person(id: Option[Int], treeId: Int, firstName: Option[String], lastName: Option[String], email: String, gender: Option[String]) extends Identifiable {
+  def fullName: Option[String] = (firstName.getOrElse("") + " " + lastName.getOrElse("")).trim.some   // TODO: currently will return Some("") if (None, None), which is wrong => bisequence
+}
 
-/**
- * Slick Todo table definition
- */
 class Persons(tag: Tag) extends Table[Person](tag, "Person") with IdentityColumn {
   //  import domain.GenderConvert._
 

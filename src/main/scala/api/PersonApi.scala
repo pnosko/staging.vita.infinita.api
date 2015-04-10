@@ -18,8 +18,14 @@ class PersonApi(implicit val mat: ActorFlowMaterializer) extends ApiService {
         complete {
           personService.createPerson(person)
         }
-      } ~ (get & path(Segment)) { treeLabel =>
-          complete { personService.getPersons(treeLabel) }
+      } ~ get {
+        val treeId = 1
+          complete ( personService.getPersons(treeId) )
+      } ~ path(IntNumber) { pid =>
+        get {
+          val treeId = 1
+         complete ( personService.getPerson(treeId, pid) )
+        }
       }
     }
 }
