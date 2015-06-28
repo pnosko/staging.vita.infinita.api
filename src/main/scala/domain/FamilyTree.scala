@@ -1,16 +1,36 @@
 package domain
 
-import scala.slick.driver.H2Driver.simple._
+import domain.database.{DriverProvider, TableSchema, TableDefinition}
+import slick.driver.JdbcDriver
 
-/**
- * Tree case class, stores information about item
- */
-case class FamilyTree(id: Option[Int], label: String) extends Identifiable//TODO: change to uuid
+case class FamilyTree(id: Option[Int], label: String) extends Identifiable //TODO: change to uuid
 
-/**
- * Slick Item table definition
- */
-class FamilyTrees(tag: Tag) extends Table[FamilyTree](tag, "Tree") with IdentityColumn {
-  def label: Column[String] = column[String]("label", O.NotNull)
-  def * = (id.?, label) <> (FamilyTree.tupled, FamilyTree.unapply _)
+trait FamilyTreesTable extends TableDefinition with TableSchema with ExtensionSupport {
+  provider: DriverProvider =>
+
+  import driver.api._
+
+  override type TableRecordType = FamilyTree
+
+  override val table = TableQuery[TableDefinition]
+
+  class TableDefinition(tag: Tag) extends Table[FamilyTree](tag, "Tree") with IdentityColumn {
+    def label: Rep[String] = column[String]("label")
+    def * = (id.?, label) <> (FamilyTree.tupled, FamilyTree.unapply)
+  }
 }
+
+object FamilyTrees {
+  def apply(driver: JdbcDriver) = new FamilyTrees(driver)
+
+  class FamilyTrees(val driver: JdbcDriver)
+    extends FamilyTreesTable
+    with FamilyTreesQuery
+    with DriverProvider
+}
+
+
+trait FamilyTreesQuery {
+
+}
+

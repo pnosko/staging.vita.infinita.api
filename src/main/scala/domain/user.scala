@@ -1,22 +1,35 @@
 package domain
 
-import scala.slick.driver.H2Driver.simple._
-
-/**
- * Todo case class, stores information about todo lists
- */
+import domain.database.{TableSchema, TableDefinition, DriverProvider}
+import slick.driver.JdbcDriver
 
 case class User(id: Option[Int], treeId: Int, name: String, personId: Int) extends Identifiable
 
-/**
- * Slick Todo table definition
- */
-class Users(tag: Tag) extends Table[User](tag, "User") with IdentityColumn {
-  def name: Column[String] = column[String]("name", O.NotNull)
-  def treeId: Column[Int] = column[Int]("treeId", O.NotNull)
-  def personId: Column[Int] = column[Int]("personId", O.NotNull)
+trait UsersTable extends TableDefinition with TableSchema with ExtensionSupport { provider: DriverProvider =>
+  import driver.api._
 
-  def tree = foreignKey("TREE_FK", treeId, TableQuery[FamilyTrees])(_.id)
-  def person = foreignKey("PERSON_FK", personId, TableQuery[Persons])(_.id)
-  def * = (id.?, treeId, name, personId) <> (User.tupled, User.unapply _)
+  override type TableRecordType = User
+
+  override val table = TableQuery[TableDefinition]
+
+  class TableDefinition(tag: Tag) extends Table[User](tag, "User") with IdentityColumn {
+    def name: Rep[String] = column[String]("name")
+    def treeId: Rep[Int] = column[Int]("treeId")
+    def personId: Rep[Int] = column[Int]("personId")
+
+    def * = (id.?, treeId, name, personId) <> (User.tupled, User.unapply)
+  }
+}
+
+object Users {
+  def apply(driver: JdbcDriver) = new Users(driver)
+
+  class Users(val driver: JdbcDriver)
+    extends UsersTable
+    with UsersQuery
+    with DriverProvider
+}
+
+trait UsersQuery {
+
 }

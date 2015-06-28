@@ -1,8 +1,6 @@
 package core
 
-import domain.{Relationships, Persons, FamilyTrees, Users}
-
-import scala.slick.lifted.TableQuery
+import domain._
 
 /**
  * Trait to include in data accessing services
@@ -10,12 +8,10 @@ import scala.slick.lifted.TableQuery
 trait DbService {
   lazy val db = DatabaseCfg.db
   lazy val config = DatabaseCfg.config
+  lazy val driver = slick.driver.H2Driver
 
-  val usersTable: TableQuery[Users] = TableQuery[Users]
-  val treesTable: TableQuery[FamilyTrees] = TableQuery[FamilyTrees]
-  val personsTable: TableQuery[Persons] = TableQuery[Persons]
-  val relationshipsTable: TableQuery[Relationships] = TableQuery[Relationships]
-
-
-  val tables: List[TableQuery[_]] = List(usersTable, treesTable, personsTable, relationshipsTable)
+  val usersTable = Users(driver)
+  val treesTable = FamilyTrees(driver)
+//  val personsTable: TableQuery[Persons] = TableQuery[Persons]
+//  val relationshipsTable: TableQuery[Relationships] = TableQuery[Relationships]
 }

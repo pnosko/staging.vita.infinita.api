@@ -1,6 +1,6 @@
 package api
 
-import akka.http.server.Directives
+import akka.http.scaladsl.server.Directives
 import domain.Protocol
 
 /**
