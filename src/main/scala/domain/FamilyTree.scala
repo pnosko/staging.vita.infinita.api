@@ -2,11 +2,16 @@ package domain
 
 import domain.database.{DriverProvider, TableSchema, TableDefinition}
 import slick.driver.JdbcDriver
+import utils.Alias
 
-case class FamilyTree(id: Option[Int], label: String) extends Identifiable //TODO: change to uuid
+import scalaz._
+import Scalaz._
 
-trait FamilyTreesTable extends TableDefinition with TableSchema with ExtensionSupport {
-  provider: DriverProvider =>
+case class FamilyTree(id: Option[Int], label: String) extends Identifiable.Default[FamilyTree]{
+  def withId(id: Int): FamilyTree = this.copy(id = id.some)
+}
+
+trait FamilyTreesTable extends TableDefinition with TableSchema with ExtensionSupport { provider: DriverProvider =>
 
   import driver.api._
 
@@ -14,7 +19,7 @@ trait FamilyTreesTable extends TableDefinition with TableSchema with ExtensionSu
 
   override val table = TableQuery[TableDefinition]
 
-  class TableDefinition(tag: Tag) extends Table[FamilyTree](tag, "Tree") with IdentityColumn {
+  class TableDefinition(tag: Tag) extends EntityTable[FamilyTree](tag, "Tree") {
     def label: Rep[String] = column[String]("label")
     def * = (id.?, label) <> (FamilyTree.tupled, FamilyTree.unapply)
   }
@@ -29,8 +34,11 @@ object FamilyTrees {
     with DriverProvider
 }
 
+trait FamilyTreesQuery extends CommonQuery { self: TableDefinition =>
 
-trait FamilyTreesQuery {
+}
+
+trait CommonQuery { self: TableDefinition =>
 
 }
 

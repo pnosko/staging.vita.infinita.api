@@ -1,14 +1,18 @@
 package domain.database
 
-import scalaz.{Monoid, Foldable}
+import domain.{Identifiable, ExtensionSupport}
+import utils.Alias._
 
-trait TableDefinition { provider: DriverProvider =>
+import scala.concurrent.ExecutionContext
+import scalaz.{-\/, \/, Monoid, Foldable}
+
+trait TableDefinition extends ProviderTypes { provider: DriverProvider =>
   import slick.dbio._
 
-  import driver.api.{Table, TableQuery}
+  import driver.api.{TableQuery}
 
-  type TableRecordType
-  type TableDefinition <: Table[TableRecordType]
+  type TableRecordType <: Identifiable[TableRecordType]
+  type TableDefinition <: EntityTable[TableRecordType]
 
   val table: TableQuery[TableDefinition]
 
@@ -22,4 +26,9 @@ trait TableDefinition { provider: DriverProvider =>
       import driver.api._
       tbl.insertOrUpdate(entity)
     }
+
+  val sth = driver.api.jdbcActionExtensionMethods()
+  def insert(entity: TableRecordType)(implicit ec: ExecutionContext) = for {
+    id <- ((table returning table.map(_.id)) += entity)
+  } yield entity.withId(id)
 }
