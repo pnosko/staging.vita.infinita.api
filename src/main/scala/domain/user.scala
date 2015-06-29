@@ -2,7 +2,6 @@ package domain
 
 import domain.database.{TableSchema, TableDefinition, DriverProvider}
 import slick.driver.JdbcDriver
-import scala.concurrent.ExecutionContext
 import scalaz._
 import Scalaz._
 
@@ -16,6 +15,7 @@ trait UsersTable extends TableDefinition with TableSchema with ExtensionSupport 
   override type TableRecordType = User
 
   override val table = TableQuery[TableDefinition]
+  override val insertMapping = table.map(_.id)
 
   class TableDefinition(tag: Tag) extends EntityTable[User](tag, "User") {
     def name: Rep[String] = column[String]("name")
@@ -24,10 +24,6 @@ trait UsersTable extends TableDefinition with TableSchema with ExtensionSupport 
 
     def * = (id.?, treeId, name, personId) <> (User.tupled, User.unapply)
   }
-
-  def inserts(entity: TableRecordType)(implicit ec: ExecutionContext) = for {
-    id <- (table returning table.map(_.id)) += entity
-  } yield entity.withId(id)
 }
 
 object Users {

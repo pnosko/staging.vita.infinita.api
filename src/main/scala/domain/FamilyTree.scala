@@ -2,7 +2,6 @@ package domain
 
 import domain.database.{DriverProvider, TableSchema, TableDefinition}
 import slick.driver.JdbcDriver
-import utils.Alias
 
 import scalaz._
 import Scalaz._
@@ -18,6 +17,7 @@ trait FamilyTreesTable extends TableDefinition with TableSchema with ExtensionSu
   override type TableRecordType = FamilyTree
 
   override val table = TableQuery[TableDefinition]
+  override val insertMapping = table.map(_.id)
 
   class TableDefinition(tag: Tag) extends EntityTable[FamilyTree](tag, "Tree") {
     def label: Rep[String] = column[String]("label")
